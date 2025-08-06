@@ -1,0 +1,62 @@
+# Docker Compose로 전체 애플리케이션 실행
+# 이 파일은 백엔드, 프론트엔드, 데이터베이스를 모두 컨테이너로 실행합니다
+
+version: '3.8'
+
+services:
+  # PostgreSQL 데이터베이스
+  database:
+    image: postgres:15-alpine
+    container_name: spring-vue-db
+    environment:
+      POSTGRES_DB: spring_vue_demo
+      POSTGRES_USER: demo_user
+      POSTGRES_PASSWORD: demo_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Spring Boot 백엔드
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: spring-vue-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://database:5432/spring_vue_demo
+      DB_USERNAME: demo_user
+      DB_PASSWORD: demo_password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Vue.js 프론트엔드
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: spring-vue-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+# 데이터 지속성을 위한 볼륨
+volumes:
+  postgres_data:
+
+# 서비스 간 통신을 위한 네트워크
+networks:
+  app-network:
+    driver: bridge

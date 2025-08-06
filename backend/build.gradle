@@ -1,0 +1,51 @@
+plugins {
+    // Spring Boot 플러그인 - Spring Boot 애플리케이션을 빌드하고 실행할 수 있게 해줍니다
+    id 'org.springframework.boot' version '3.2.0'
+    // Spring 의존성 관리 플러그인 - Spring 관련 라이브러리 버전을 자동으로 관리합니다
+    id 'io.spring.dependency-management' version '1.1.4'
+    // Java 플러그인 - Java 프로젝트를 컴파일하고 빌드할 수 있게 해줍니다
+    id 'java'
+}
+
+// 프로젝트 그룹 ID (일반적으로 회사나 개인의 도메인을 역순으로)
+group = 'com.example'
+// 프로젝트 버전
+version = '0.0.1-SNAPSHOT'
+
+// Java 버전 설정 (Java 17 사용)
+java {
+    sourceCompatibility = '17'
+}
+
+// 의존성을 다운로드할 저장소 설정
+repositories {
+    // Maven Central 저장소 - 대부분의 Java 라이브러리가 있는 공식 저장소
+    mavenCentral()
+}
+
+// 프로젝트에서 사용할 라이브러리들 정의
+dependencies {
+    // Spring Boot Web Starter - 웹 애플리케이션 개발에 필요한 모든 것을 포함
+    // (Tomcat 서버, Spring MVC, JSON 처리 등)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Spring Data JPA - 데이터베이스 연동을 위한 JPA 기능 제공
+    // (엔티티, 리포지토리, 트랜잭션 관리 등)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    
+    // H2 Database - 인메모리 데이터베이스 (개발용)
+    // 별도 설치 없이 사용 가능, 웹 콘솔 제공
+    runtimeOnly 'com.h2database:h2'
+    
+    // PostgreSQL Database - 프로덕션용 데이터베이스
+    // 배포 시 실제 데이터베이스로 사용
+    runtimeOnly 'org.postgresql:postgresql'
+    
+    // 테스트용 라이브러리 - JUnit, Mockito 등 테스트 도구들 포함
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// 테스트 실행 시 JUnit 플랫폼 사용
+tasks.named('test') {
+    useJUnitPlatform()
+}
