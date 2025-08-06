@@ -1,0 +1,11 @@
+# GitHub에 코드 업로드를 위한 명령어들
+# 아래 명령어들을 순서대로 실행하세요
+
+# 1. GitHub 저장소와 연결 (YOUR_USERNAME을 실제 GitHub 사용자명으로 변경)
+git remote add origin https://github.com/Leon-Yoo/spring-vue-railway-demo
+
+# 2. 기본 브랜치를 main으로 설정
+git branch -M main
+
+# 3. 코드를 GitHub에 업로드
+git push -u origin main
