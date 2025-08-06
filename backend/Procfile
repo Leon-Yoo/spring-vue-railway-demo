@@ -1,0 +1,8 @@
+# Railway 배포 설정
+# Dockerfile 오류 시 대안 방법
+
+# 백엔드: Spring Boot Buildpack 사용
+web: java -jar build/libs/*.jar
+
+# 포트 설정
+PORT=8080
