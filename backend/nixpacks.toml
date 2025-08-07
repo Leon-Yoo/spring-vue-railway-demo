@@ -1,0 +1,21 @@
+# Nixpacks 설정 파일 - Railway의 자동 빌드팩 사용
+# Docker 이미지 다운로드 문제를 해결하기 위해 Nixpacks 사용
+
+[phases.setup]
+# Java 17 설치
+nixPkgs = ["openjdk17"]
+
+[phases.build]
+# Gradle 빌드 실행
+cmds = [
+    "chmod +x gradlew",
+    "./gradlew build -x test --no-daemon"
+]
+
+[start]
+# 애플리케이션 시작 명령
+cmd = "java -jar build/libs/*.jar"
+
+[variables]
+# JVM 메모리 설정 (Railway 메모리 제한 고려)
+JAVA_OPTS = "-Xmx512m -Xms256m"
